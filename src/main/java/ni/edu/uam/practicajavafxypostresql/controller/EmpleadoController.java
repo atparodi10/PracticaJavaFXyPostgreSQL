@@ -76,6 +76,9 @@ public class EmpleadoController {
     @FXML
     private TableColumn<Empleado, String> colEstado;
 
+    @FXML
+    private ComboBox<String> cmbConsultas;
+
     private final ObservableList<Empleado> empleados = FXCollections.observableArrayList();
 
     @FXML
@@ -154,6 +157,149 @@ public class EmpleadoController {
         catch (SQLException ex) {
             ex.printStackTrace();
             mostrarAlerta(Alert.AlertType.ERROR, "Error BD", "Error al guardar", ex.getMessage());
+        }
+    }
+
+    @FXML
+    private void ejecutarConsulta() {
+        String seleccion = cmbConsultas.getValue();
+
+        if (seleccion == null) {
+            mostrarAlerta(Alert.AlertType.WARNING, "Advertencia", "Selección requerida", "Por favor seleccione una consulta del menú.");
+            return;
+        }
+
+        switch (seleccion) {
+            case "Mostrar todos los empleados":
+                cargarEmpleadosGenerico("SELECT * FROM empleado");
+                break;
+            case "Mostrar nombres, apellidos y cargo":
+                mostrarNombresApellidosCargo();
+                break;
+            case "Mostrar empleados de Administración":
+                cargarEmpleadosGenerico("SELECT * FROM empleado WHERE departamento = 'Administración'");
+                break;
+            case "Mostrar empleados con salario mayor a 20000":
+                cargarEmpleadosGenerico("SELECT * FROM empleado WHERE salario > 20000");
+                break;
+            case "Ordenar empleados por salario de mayor a menor":
+                cargarEmpleadosGenerico("SELECT * FROM empleado ORDER BY salario DESC");
+                break;
+            case "Contar cantidad total de empleados":
+                mostrarResultadoEscalar("SELECT COUNT(*) AS resultado FROM empleado", "Cantidad total de empleados registrados:");
+                break;
+            case "Obtener salario promedio":
+                mostrarResultadoEscalar("SELECT AVG(salario) AS resultado FROM empleado", "El salario promedio es: C$ ");
+                break;
+            case "Obtener suma de los salarios":
+                mostrarResultadoEscalar("SELECT SUM(salario) AS resultado FROM empleado", "La suma de todos los salarios es: C$ ");
+                break;
+            case "Mostrar empleados activos":
+                cargarEmpleadosGenerico("SELECT * FROM empleado WHERE estado = 'Activo'");
+                break;
+            case "Agrupar empleados por departamento":
+                mostrarAgrupacionDepartamentos();
+                break;
+            default:
+                mostrarAlerta(Alert.AlertType.ERROR, "Error", "Consulta no reconocida", "La consulta seleccionada no existe.");
+                break;
+        }
+    }
+
+    // --- MÉTODOS AUXILIARES PARA LAS CONSULTAS ---
+
+    private void cargarEmpleadosGenerico(String sql) {
+        empleados.clear();
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while(resultSet.next()){
+                Empleado empleado = new Empleado();
+                empleado.setId(resultSet.getInt("id"));
+                empleado.setNombres(resultSet.getString("nombres"));
+                empleado.setApellidos(resultSet.getString("apellidos"));
+                empleado.setCedula(resultSet.getString("cedula"));
+                empleado.setCorreo(resultSet.getString("correo"));
+                empleado.setTelefono(resultSet.getString("telefono"));
+                empleado.setCargo(resultSet.getString("cargo"));
+                empleado.setDepartamento(resultSet.getString("departamento"));
+                empleado.setSalario(resultSet.getDouble("salario"));
+                empleado.setFechaContracion(Date.valueOf(resultSet.getObject("fecha_contratacion", LocalDate.class)));
+                empleado.setEstado(resultSet.getString("estado"));
+                empleados.add(empleado);
+            }
+            tblEmpleado.setItems(empleados);
+
+        } catch (SQLException ex){
+            ex.printStackTrace();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error BD", "Fallo al ejecutar consulta", ex.getMessage());
+        }
+    }
+
+    private void mostrarNombresApellidosCargo() {
+        empleados.clear();
+        String sql = "SELECT nombres, apellidos, cargo FROM empleado";
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while(resultSet.next()){
+                Empleado empleado = new Empleado();
+                empleado.setNombres(resultSet.getString("nombres"));
+                empleado.setApellidos(resultSet.getString("apellidos"));
+                empleado.setCargo(resultSet.getString("cargo"));
+                // Solo llenamos esos 3. El resto aparecerá nulo/vacío en tu TableView, lo cual es correcto.
+                empleados.add(empleado);
+            }
+            tblEmpleado.setItems(empleados);
+
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void mostrarResultadoEscalar(String sql, String mensajeTexto) {
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            if (resultSet.next()) {
+                // Obtenemos la columna calculada, la traemos como String para más facilidad (así abarca int o double)
+                String resultado = resultSet.getString("resultado");
+
+                // Formateamos si es decimal para no ver números demasiado largos
+                if (resultado != null && resultado.contains(".")) {
+                    double num = Double.parseDouble(resultado);
+                    resultado = String.format("%.2f", num);
+                }
+
+                mostrarAlerta(Alert.AlertType.INFORMATION, "Resultado Matemático", "Cálculo Exitoso", mensajeTexto + " " + resultado);
+            }
+
+        } catch (SQLException ex){
+            ex.printStackTrace();
+        }
+    }
+
+    private void mostrarAgrupacionDepartamentos() {
+        String sql = "SELECT departamento, COUNT(*) AS cantidad_empleados FROM empleado GROUP BY departamento ORDER BY departamento";
+        StringBuilder textoAgrupado = new StringBuilder("Empleados por Departamento:\n\n");
+
+        try (Connection connection = DataBaseConnection.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(sql);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+
+            while(resultSet.next()){
+                String depto = resultSet.getString("departamento");
+                int cantidad = resultSet.getInt("cantidad_empleados");
+                textoAgrupado.append("• ").append(depto).append(": ").append(cantidad).append(" empleado(s)\n");
+            }
+
+            mostrarAlerta(Alert.AlertType.INFORMATION, "Reporte por Departamento", "Agrupación Exitosa", textoAgrupado.toString());
+
+        } catch (SQLException ex){
+            ex.printStackTrace();
         }
     }
 
@@ -275,5 +421,7 @@ public class EmpleadoController {
 
         return true;
     }
+
+
 
 }
