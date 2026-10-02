@@ -179,11 +179,6 @@
                                     <String fx:value="3. Mostrar empleados por departamento"/>
                                     <String fx:value="4. Mostrar empleados con salario mayor a 20000"/>
                                     <String fx:value="5. Ordenar empleados por salario de mayor a menor"/>
-                                    <String fx:value="6. Contar la cantidad total de empleados"/>
-                                    <String fx:value="7. Obtener el salario promedio"/>
-                                    <String fx:value="8. Obtener la suma de todos los salarios"/>
-                                    <String fx:value="9. Mostrar únicamente empleados activos"/>
-                                    <String fx:value="10. Agrupar empleados por departamento"/>
 
                                 </FXCollections>
 
