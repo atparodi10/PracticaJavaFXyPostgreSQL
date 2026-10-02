@@ -147,15 +147,18 @@
 
                         <Button fx:id="btnGuardar"
                                 text="Guardar"
-                                prefWidth="130.0"/>
+                                prefWidth="130.0"
+                                onAction="#guardarEmpleado"/>
 
                         <Button fx:id="btnLimpiar"
                                 text="Limpiar"
-                                prefWidth="130.0"/>
+                                prefWidth="130.0"
+                                onAction="#limpiarCampos"/>
 
                         <Button fx:id="btnActualizar"
                                 text="Actualizar tabla"
-                                prefWidth="150.0"/>
+                                prefWidth="150.0"
+                                onAction="#cargarEmpleados"/>
 
                     </HBox>
 
@@ -188,7 +191,8 @@
 
                         <Button fx:id="btnEjecutarConsulta"
                                 text="Ejecutar consulta"
-                                prefWidth="170.0"/>
+                                prefWidth="170.0"
+                                onAction="#ejecutarConsulta"/>
 
                     </HBox>
 
