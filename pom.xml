@@ -61,7 +61,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                ni.edu.uam.practicajavafxypostresql/ni.edu.uam.practicajavafxypostresql.RegistroEmpleadoApplication
+                                ni.edu.uam.practicajavafxypostresql/ni.edu.uam.practicajavafxypostresql.registroEmpleadoApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
