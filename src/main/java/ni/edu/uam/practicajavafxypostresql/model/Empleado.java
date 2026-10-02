@@ -22,7 +22,7 @@ public class Empleado {
     private String cargo;
     private String departamento;
     private double salario;
-    private Date fechaContracion;
+    private Date fechaContratacion;
     private String estado;
 
 

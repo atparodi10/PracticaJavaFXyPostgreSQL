@@ -10,7 +10,7 @@ import ni.edu.uam.practicajavafxypostresql.model.Empleado;
 
 import java.sql.*;
 import java.time.LocalDate;
-
+import javafx.scene.control.cell.PropertyValueFactory;
 
 public class EmpleadoController {
     @FXML
@@ -71,7 +71,7 @@ public class EmpleadoController {
     private TableColumn<Empleado, Double> colSalario;
 
     @FXML
-    private TableColumn<Empleado, LocalDate> colFechaContratacion;
+    private TableColumn<Empleado, Date> colFechaContratacion;
 
     @FXML
     private TableColumn<Empleado, String> colEstado;
@@ -80,6 +80,51 @@ public class EmpleadoController {
     private ComboBox<String> cmbConsultas;
 
     private final ObservableList<Empleado> empleados = FXCollections.observableArrayList();
+
+    @FXML
+    private void initialize() {
+        // 1. Configurar las columnas de la tabla
+        colId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colNombres.setCellValueFactory(new PropertyValueFactory<>("nombres"));
+        colApellidos.setCellValueFactory(new PropertyValueFactory<>("apellidos"));
+        colCedula.setCellValueFactory(new PropertyValueFactory<>("cedula"));
+        colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
+        colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
+        colCargo.setCellValueFactory(new PropertyValueFactory<>("cargo"));
+        colSalario.setCellValueFactory(new PropertyValueFactory<>("salario"));
+
+
+        colFechaContratacion.setCellValueFactory(new PropertyValueFactory<>("fechaContratacion"));
+
+        colEstado.setCellValueFactory(new PropertyValueFactory<>("estado"));
+
+        // 2. Inicializar ComboBox de Departamento
+        cmbDepartamento.getItems().clear();
+        cmbDepartamento.getItems().addAll(
+                "Administración",
+                "Tecnología",
+                "Operaciones",
+                "Recursos Humanos",
+                "Finanzas"
+        );
+
+        // 3. Inicializar ComboBox de Estado
+        cmbEstado.getItems().clear();
+        cmbEstado.getItems().addAll("Activo", "Inactivo");
+
+        // 4. Inicializar ComboBox de Consultas SQL
+        cmbConsultas.getItems().clear();
+        cmbConsultas.getItems().addAll(
+                "Mostrar todos los empleados",
+                "Mostrar nombres, apellidos y cargo",
+                "Mostrar empleados por departamento",
+                "Mostrar empleados con salario mayor a 20000",
+                "Ordenar empleados por salario de mayor a menor"
+        );
+
+        // 5. Cargar los datos de la base de datos a la tabla al iniciar
+        cargarEmpleados();
+    }
 
     @FXML
     private void cargarEmpleados(){
@@ -104,7 +149,7 @@ public class EmpleadoController {
                 empleado.setDepartamento(resultSet.getString("departamento"));
                 empleado.setSalario(resultSet.getDouble("salario"));
 
-                empleado.setFechaContracion(Date.valueOf(resultSet.getObject("fecha_contratacion", LocalDate.class)));
+                empleado.setFechaContratacion(resultSet.getDate("fecha_contratacion"));
 
                 empleado.setEstado(resultSet.getString("estado"));
 
@@ -185,28 +230,13 @@ public class EmpleadoController {
             case "Ordenar empleados por salario de mayor a menor":
                 cargarEmpleadosGenerico("SELECT * FROM empleado ORDER BY salario DESC");
                 break;
-            case "Contar cantidad total de empleados":
-                mostrarResultadoEscalar("SELECT COUNT(*) AS resultado FROM empleado", "Cantidad total de empleados registrados:");
-                break;
-            case "Obtener salario promedio":
-                mostrarResultadoEscalar("SELECT AVG(salario) AS resultado FROM empleado", "El salario promedio es: C$ ");
-                break;
-            case "Obtener suma de los salarios":
-                mostrarResultadoEscalar("SELECT SUM(salario) AS resultado FROM empleado", "La suma de todos los salarios es: C$ ");
-                break;
-            case "Mostrar empleados activos":
-                cargarEmpleadosGenerico("SELECT * FROM empleado WHERE estado = 'Activo'");
-                break;
-            case "Agrupar empleados por departamento":
-                mostrarAgrupacionDepartamentos();
-                break;
             default:
                 mostrarAlerta(Alert.AlertType.ERROR, "Error", "Consulta no reconocida", "La consulta seleccionada no existe.");
                 break;
         }
     }
 
-    // --- MÉTODOS AUXILIARES PARA LAS CONSULTAS ---
+    // --- MÉTODOS AUXILIARES PARA LAS 5 CONSULTAS ---
 
     private void cargarEmpleadosGenerico(String sql) {
         empleados.clear();
@@ -225,7 +255,7 @@ public class EmpleadoController {
                 empleado.setCargo(resultSet.getString("cargo"));
                 empleado.setDepartamento(resultSet.getString("departamento"));
                 empleado.setSalario(resultSet.getDouble("salario"));
-                empleado.setFechaContracion(Date.valueOf(resultSet.getObject("fecha_contratacion", LocalDate.class)));
+                empleado.setFechaContratacion(resultSet.getDate("fecha_contratacion"));
                 empleado.setEstado(resultSet.getString("estado"));
                 empleados.add(empleado);
             }
@@ -249,7 +279,6 @@ public class EmpleadoController {
                 empleado.setNombres(resultSet.getString("nombres"));
                 empleado.setApellidos(resultSet.getString("apellidos"));
                 empleado.setCargo(resultSet.getString("cargo"));
-                // Solo llenamos esos 3. El resto aparecerá nulo/vacío en tu TableView, lo cual es correcto.
                 empleados.add(empleado);
             }
             tblEmpleado.setItems(empleados);
@@ -259,62 +288,7 @@ public class EmpleadoController {
         }
     }
 
-    private void mostrarResultadoEscalar(String sql, String mensajeTexto) {
-        try (Connection connection = DataBaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            if (resultSet.next()) {
-                // Obtenemos la columna calculada, la traemos como String para más facilidad (así abarca int o double)
-                String resultado = resultSet.getString("resultado");
-
-                // Formateamos si es decimal para no ver números demasiado largos
-                if (resultado != null && resultado.contains(".")) {
-                    double num = Double.parseDouble(resultado);
-                    resultado = String.format("%.2f", num);
-                }
-
-                mostrarAlerta(Alert.AlertType.INFORMATION, "Resultado Matemático", "Cálculo Exitoso", mensajeTexto + " " + resultado);
-            }
-
-        } catch (SQLException ex){
-            ex.printStackTrace();
-        }
-    }
-
-    private void mostrarAgrupacionDepartamentos() {
-        String sql = "SELECT departamento, COUNT(*) AS cantidad_empleados FROM empleado GROUP BY departamento ORDER BY departamento";
-        StringBuilder textoAgrupado = new StringBuilder("Empleados por Departamento:\n\n");
-
-        try (Connection connection = DataBaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-
-            while(resultSet.next()){
-                String depto = resultSet.getString("departamento");
-                int cantidad = resultSet.getInt("cantidad_empleados");
-                textoAgrupado.append("• ").append(depto).append(": ").append(cantidad).append(" empleado(s)\n");
-            }
-
-            mostrarAlerta(Alert.AlertType.INFORMATION, "Reporte por Departamento", "Agrupación Exitosa", textoAgrupado.toString());
-
-        } catch (SQLException ex){
-            ex.printStackTrace();
-        }
-    }
-
-    private void limpiarCampos() {
-        txtNombres.clear();
-        txtApellidos.clear();
-        txtCedula.clear();
-        txtCorreo.clear();
-        txtTelefono.clear();
-        txtCargo.clear();
-        txtSalario.clear();
-        cmbDepartamento.setValue(null);
-        cmbEstado.setValue(null);
-        dpFechaContratacion.setValue(null);
-    }
 
     private void mostrarAlerta(Alert.AlertType tipoAlerta, String titulo, String header, String mensaje) {
         Alert alert = new Alert(tipoAlerta);
@@ -422,6 +396,18 @@ public class EmpleadoController {
         return true;
     }
 
-
+    @FXML
+    private void limpiarCampos() {
+        txtNombres.clear();
+        txtApellidos.clear();
+        txtCedula.clear();
+        txtCorreo.clear();
+        txtTelefono.clear();
+        txtCargo.clear();
+        txtSalario.clear();
+        cmbDepartamento.setValue(null);
+        cmbEstado.setValue(null);
+        dpFechaContratacion.setValue(null);
+    }
 
 }
