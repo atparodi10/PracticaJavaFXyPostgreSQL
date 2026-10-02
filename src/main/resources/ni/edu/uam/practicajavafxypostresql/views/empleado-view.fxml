@@ -1,28 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ni.edu.uam.practicajavafxypostresql.controller.EmpleadoController"
-            prefWidth="1200.0"
-            prefHeight="750.0"
-            stylesheets="@../estilos/estilos.css">
+<BorderPane prefHeight="750.0" prefWidth="1200.0" stylesheets="@../estilos/estilos.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ni.edu.uam.practicajavafxypostresql.controller.EmpleadoController">
 
     <center>
 
@@ -33,155 +17,97 @@
                 <VBox spacing="20.0">
 
                     <padding>
-                        <Insets top="25.0"
-                                right="30.0"
-                                bottom="25.0"
-                                left="30.0"/>
+                        <Insets bottom="25.0" left="30.0" right="30.0" top="25.0" />
                     </padding>
 
-                    <Label text="REGISTRO DE EMPLEADOS"
-                           styleClass="titulo"/>
+                    <Label styleClass="titulo" text="REGISTRO DE EMPLEADOS" />
 
-                    <Separator/>
+                    <Separator />
 
-                    <GridPane hgap="15.0"
-                              vgap="15.0">
+                    <GridPane hgap="15.0" vgap="15.0">
 
-                        <Label text="Nombres:"
-                               GridPane.columnIndex="0"
-                               GridPane.rowIndex="0"/>
+                        <Label text="Nombres:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
 
-                        <TextField fx:id="txtNombres"
-                                   promptText="Ingrese los nombres"
-                                   prefWidth="250.0"
-                                   GridPane.columnIndex="1"
-                                   GridPane.rowIndex="0"/>
+                        <TextField fx:id="txtNombres" prefWidth="250.0" promptText="Ingrese los nombres" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                        <Label text="Apellidos:"
-                               GridPane.columnIndex="2"
-                               GridPane.rowIndex="0"/>
+                        <Label text="Apellidos:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
 
-                        <TextField fx:id="txtApellidos"
-                                   promptText="Ingrese los apellidos"
-                                   prefWidth="250.0"
-                                   GridPane.columnIndex="3"
-                                   GridPane.rowIndex="0"/>
+                        <TextField fx:id="txtApellidos" prefWidth="250.0" promptText="Ingrese los apellidos" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
-                        <Label text="Cédula:"
-                               GridPane.columnIndex="0"
-                               GridPane.rowIndex="1"/>
+                        <Label text="Cédula:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
 
-                        <TextField fx:id="txtCedula"
-                                   promptText="Ingrese la cédula"
-                                   GridPane.columnIndex="1"
-                                   GridPane.rowIndex="1"/>
+                        <TextField fx:id="txtCedula" promptText="Ingrese la cédula" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                        <Label text="Correo:"
-                               GridPane.columnIndex="2"
-                               GridPane.rowIndex="1"/>
+                        <Label text="Correo:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 
-                        <TextField fx:id="txtCorreo"
-                                   promptText="ejemplo@uamv.edu.ni"
-                                   GridPane.columnIndex="3"
-                                   GridPane.rowIndex="1"/>
+                        <TextField fx:id="txtCorreo" promptText="ejemplo@uamv.edu.ni" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 
-                        <Label text="Teléfono:"
-                               GridPane.columnIndex="0"
-                               GridPane.rowIndex="2"/>
+                        <Label text="Teléfono:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
 
-                        <TextField fx:id="txtTelefono"
-                                   promptText="Ingrese el teléfono"
-                                   GridPane.columnIndex="1"
-                                   GridPane.rowIndex="2"/>
+                        <TextField fx:id="txtTelefono" promptText="Ingrese el teléfono" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                        <Label text="Cargo:"
-                               GridPane.columnIndex="2"
-                               GridPane.rowIndex="2"/>
+                        <Label text="Cargo:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
 
-                        <TextField fx:id="txtCargo"
-                                   promptText="Ingrese el cargo"
-                                   GridPane.columnIndex="3"
-                                   GridPane.rowIndex="2"/>
+                        <TextField fx:id="txtCargo" promptText="Ingrese el cargo" GridPane.columnIndex="3" GridPane.rowIndex="2" />
 
-                        <Label text="Departamento:"
-                               GridPane.columnIndex="0"
-                               GridPane.rowIndex="3"/>
+                        <Label text="Departamento:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
 
-                        <ComboBox fx:id="cmbDepartamento"
-                                  promptText="Seleccione..."
-                                  prefWidth="250.0"
-                                  GridPane.columnIndex="1"
-                                  GridPane.rowIndex="3"/>
+                        <ComboBox fx:id="cmbDepartamento" prefWidth="250.0" promptText="Seleccione..." GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                        <Label text="Salario:"
-                               GridPane.columnIndex="2"
-                               GridPane.rowIndex="3"/>
+                        <Label text="Salario:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
 
-                        <TextField fx:id="txtSalario"
-                                   promptText="Ingrese el salario"
-                                   GridPane.columnIndex="3"
-                                   GridPane.rowIndex="3"/>
+                        <TextField fx:id="txtSalario" promptText="Ingrese el salario" GridPane.columnIndex="3" GridPane.rowIndex="3" />
 
-                        <Label text="Fecha de contratación:"
-                               GridPane.columnIndex="0"
-                               GridPane.rowIndex="4"/>
+                        <Label text="Fecha de contratación:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
 
-                        <DatePicker fx:id="dpFechaContratacion"
-                                    prefWidth="250.0"
-                                    GridPane.columnIndex="1"
-                                    GridPane.rowIndex="4"/>
+                        <DatePicker fx:id="dpFechaContratacion" prefWidth="250.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                        <Label text="Estado:"
-                               GridPane.columnIndex="2"
-                               GridPane.rowIndex="4"/>
+                        <Label text="Estado:" GridPane.columnIndex="2" GridPane.rowIndex="4" />
 
-                        <ComboBox fx:id="cmbEstado"
-                                  promptText="Seleccione..."
-                                  prefWidth="250.0"
-                                  GridPane.columnIndex="3"
-                                  GridPane.rowIndex="4"/>
+                        <ComboBox fx:id="cmbEstado" prefWidth="250.0" promptText="Seleccione..." GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                  <columnConstraints>
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
 
                     </GridPane>
 
                     <HBox spacing="15.0">
 
-                        <Button fx:id="btnGuardar"
-                                text="Guardar"
-                                prefWidth="130.0"
-                                onAction="#guardarEmpleado"/>
+                        <Button fx:id="btnGuardar" onAction="#guardarEmpleado" prefWidth="130.0" text="Guardar" />
 
-                        <Button fx:id="btnLimpiar"
-                                text="Limpiar"
-                                prefWidth="130.0"
-                                onAction="#limpiarCampos"/>
+                        <Button fx:id="btnLimpiar" onAction="#limpiarCampos" prefWidth="130.0" text="Limpiar" />
 
-                        <Button fx:id="btnActualizar"
-                                text="Actualizar tabla"
-                                prefWidth="150.0"
-                                onAction="#cargarEmpleados"/>
+                        <Button fx:id="btnActualizar" onAction="#cargarEmpleados" prefWidth="150.0" text="Actualizar tabla" />
 
                     </HBox>
 
-                    <Separator/>
+                    <Separator />
 
-                    <Label text="CONSULTAS DE EMPLEADOS"
-                           styleClass="subtitulo"/>
+                    <Label styleClass="subtitulo" text="CONSULTAS DE EMPLEADOS" />
 
                     <HBox spacing="15.0">
 
-                        <ComboBox fx:id="cmbConsulta"
-                                  promptText="Seleccione una consulta"
-                                  prefWidth="550.0">
+                        <ComboBox fx:id="cmbConsultas" prefWidth="550.0" promptText="Seleccione una consulta">
 
                             <items>
 
                                 <FXCollections fx:factory="observableArrayList">
 
-                                    <String fx:value="1. Mostrar todos los empleados"/>
-                                    <String fx:value="2. Mostrar nombres, apellidos y cargo"/>
-                                    <String fx:value="3. Mostrar empleados por departamento"/>
-                                    <String fx:value="4. Mostrar empleados con salario mayor a 20000"/>
-                                    <String fx:value="5. Ordenar empleados por salario de mayor a menor"/>
+                                    <String fx:value="1. Mostrar todos los empleados" />
+                                    <String fx:value="2. Mostrar nombres, apellidos y cargo" />
+                                    <String fx:value="3. Mostrar empleados por departamento" />
+                                    <String fx:value="4. Mostrar empleados con salario mayor a 20000" />
+                                    <String fx:value="5. Ordenar empleados por salario de mayor a menor" />
 
                                 </FXCollections>
 
@@ -189,66 +115,39 @@
 
                         </ComboBox>
 
-                        <Button fx:id="btnEjecutarConsulta"
-                                text="Ejecutar consulta"
-                                prefWidth="170.0"
-                                onAction="#ejecutarConsulta"/>
+                        <Button fx:id="btnEjecutarConsulta" onAction="#ejecutarConsulta" prefWidth="170.0" text="Ejecutar consulta" />
 
                     </HBox>
 
-                    <Separator/>
+                    <Separator />
 
-                    <Label text="EMPLEADOS REGISTRADOS"
-                           styleClass="subtitulo"/>
+                    <Label styleClass="subtitulo" text="EMPLEADOS REGISTRADOS" />
 
-                    <TableView fx:id="tblEmpleados"
-                               prefHeight="350.0">
+                    <TableView fx:id="tblEmpleado" prefHeight="350.0">
 
                         <columns>
 
-                            <TableColumn fx:id="colId"
-                                         text="ID"
-                                         prefWidth="60.0"/>
+                            <TableColumn fx:id="colId" prefWidth="60.0" text="ID" />
 
-                            <TableColumn fx:id="colNombres"
-                                         text="Nombres"
-                                         prefWidth="120.0"/>
+                            <TableColumn fx:id="colNombres" prefWidth="120.0" text="Nombres" />
 
-                            <TableColumn fx:id="colApellidos"
-                                         text="Apellidos"
-                                         prefWidth="140.0"/>
+                            <TableColumn fx:id="colApellidos" prefWidth="140.0" text="Apellidos" />
 
-                            <TableColumn fx:id="colCedula"
-                                         text="Cédula"
-                                         prefWidth="150.0"/>
+                            <TableColumn fx:id="colCedula" prefWidth="150.0" text="Cédula" />
 
-                            <TableColumn fx:id="colCorreo"
-                                         text="Correo"
-                                         prefWidth="200.0"/>
+                            <TableColumn fx:id="colCorreo" prefWidth="200.0" text="Correo" />
 
-                            <TableColumn fx:id="colTelefono"
-                                         text="Teléfono"
-                                         prefWidth="110.0"/>
+                            <TableColumn fx:id="colTelefono" prefWidth="110.0" text="Teléfono" />
 
-                            <TableColumn fx:id="colCargo"
-                                         text="Cargo"
-                                         prefWidth="130.0"/>
+                            <TableColumn fx:id="colCargo" prefWidth="130.0" text="Cargo" />
 
-                            <TableColumn fx:id="colDepartamento"
-                                         text="Departamento"
-                                         prefWidth="150.0"/>
+                            <TableColumn fx:id="colDepartamento" prefWidth="150.0" text="Departamento" />
 
-                            <TableColumn fx:id="colSalario"
-                                         text="Salario"
-                                         prefWidth="100.0"/>
+                            <TableColumn fx:id="colSalario" prefWidth="100.0" text="Salario" />
 
-                            <TableColumn fx:id="colFechaContratacion"
-                                         text="Fecha contratación"
-                                         prefWidth="150.0"/>
+                            <TableColumn fx:id="colFechaContratacion" prefWidth="150.0" text="Fecha contratación" />
 
-                            <TableColumn fx:id="colEstado"
-                                         text="Estado"
-                                         prefWidth="100.0"/>
+                            <TableColumn fx:id="colEstado" prefWidth="100.0" text="Estado" />
 
                         </columns>
 

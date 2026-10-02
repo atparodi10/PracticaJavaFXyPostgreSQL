@@ -16,9 +16,9 @@ public class RegistroEmpleadoApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(EmpleadoController.class.getResource("empleado-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(RegistroEmpleadoApplication.class.getResource("views/empleado-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Hello!");
+        stage.setTitle("Registro de Empleados");
         stage.setScene(scene);
         stage.show();
     }

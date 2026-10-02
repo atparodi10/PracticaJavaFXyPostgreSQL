@@ -68,6 +68,9 @@ public class EmpleadoController {
     private TableColumn<Empleado, String> colCargo;
 
     @FXML
+    private  TableColumn<Empleado, String> colDepartamento;
+
+    @FXML
     private TableColumn<Empleado, Double> colSalario;
 
     @FXML
@@ -91,6 +94,7 @@ public class EmpleadoController {
         colCorreo.setCellValueFactory(new PropertyValueFactory<>("correo"));
         colTelefono.setCellValueFactory(new PropertyValueFactory<>("telefono"));
         colCargo.setCellValueFactory(new PropertyValueFactory<>("cargo"));
+        colDepartamento.setCellValueFactory(new PropertyValueFactory<>("departamento"));
         colSalario.setCellValueFactory(new PropertyValueFactory<>("salario"));
 
 
@@ -164,7 +168,7 @@ public class EmpleadoController {
     }
 
     @FXML
-    private void GuardarEmpleado(){
+    private void guardarEmpleado(){
         if(!validarCampos()){
             return;
         }
@@ -221,8 +225,8 @@ public class EmpleadoController {
             case "Mostrar nombres, apellidos y cargo":
                 mostrarNombresApellidosCargo();
                 break;
-            case "Mostrar empleados de Administración":
-                cargarEmpleadosGenerico("SELECT * FROM empleado WHERE departamento = 'Administración'");
+            case "Mostrar empleados por departamento":
+                cargarEmpleadosGenerico("SELECT * FROM empleado ORDER BY departamento");
                 break;
             case "Mostrar empleados con salario mayor a 20000":
                 cargarEmpleadosGenerico("SELECT * FROM empleado WHERE salario > 20000");
