@@ -54,3 +54,32 @@
 .table-view .column-header .label {
     -fx-font-weight: bold;
 }
+
+.ayuda {
+    -fx-text-fill: #666666;
+    -fx-font-size: 12px;
+}
+
+.boton-actualizar {
+    -fx-background-color: #e08b24;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.boton-eliminar {
+    -fx-background-color: #c94a4a;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.boton-secundario {
+    -fx-background-color: #6b7280;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.boton-actualizar:hover,
+.boton-eliminar:hover,
+.boton-secundario:hover {
+    -fx-opacity: 0.88;
+}
